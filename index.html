@@ -1,102 +1,143 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>HP HANGMAN</title>
-  </head>
-  <body>
-        <h2>HARRY POTTER HANGMAN</h2>
+</head>
 
-        <div>Letters Guessed</div><div id="guessed-letters"></div>
-        <br>
-        <div>Word </div><div id="selected-word"></div>
+<body>
+    <h2>HARRY POTTER HANGMAN</h2>
+    <button onclick="createGame()">Start Game</button>
+
+    <div>Letters Guessed</div>
+    <div id="guessed-letters"></div>
+    <br>
+    <div>Word </div>
+    <div id="selected-word"></div>
+    <br>
+    <div>Guesses Remaining</div>
+    <div id="guesses-remaining"></div>
 
 
 
     <script>
-//start with zero wins and loses
-var wins = 0;
-var loses = 0;
-var  currentWord;
-var gameOver = false;
-var lettersUsed = document.getElementById("guessed-letters");
-var selectedWord = document.getElementById("selected-word");
-var displayedWord = [];
-
-//Sets the max guesses to 5
-var maxGuessAttempts = 10;
-
-var lettersGuessed = [];
-
-
-//Valid input
-var validKeys = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' ];
-
-//Wordlist to pick from
-var wordList = ["harry","ron","hermione","broom","wand","quidditch","dumbledore","snape","muggle","hagrid","snitch"]
-
-//Creating game with the words t
-function createGame (){
-    //picking a randomg word to start the game
-    currentWord = wordList[Math.floor(Math.random() * wordList.length)];
-   
-   //Console Log to see how the word is writting out
-    console.log(currentWord);
-    console.log(currentWord.length);
-    for (var x=0; x < currentWord.length; x++){
-        console.log(currentWord[x])
-    }
-}
-
-function checkUserGuess(checkedGuess){
-    for (var j=0; j < currentWord.length; j++){
-        if (currentWord[j] === checkedGuess){
-            displayedWord.push(checkedGuess);
-            selectedWord.textContent = displayedWord;
-
-
-            
-            
-
-        }
-    }
-
-}
-
-
-
-createGame();
-
-document.onkeyup = function(event) {
-	var userGuess = event.key;
-
-    //if game is not over continuing to guess letters
-	if (gameOver === false) {
+        //start with zero wins and loses
+        var wins = 0;
+        var loses = 0;
+        var foundInWord;
+        var currentWord;
+        var gameOver;
+        var lettersUsed = document.getElementById("guessed-letters");
+        var selectedWord = document.getElementById("selected-word");
+        var guessRemaining = document.getElementById("guesses-remaining");
+        var displayedWord = [];
+        var hiddenWord = [];
         
-        //Verifying that the keys pressed are valid
-        if (validKeys.includes(userGuess)) {   
-            if (lettersGuessed.indexOf(userGuess)===-1){
-                lettersGuessed.push(userGuess);
-                lettersUsed.textContent = lettersGuessed;
-                checkUserGuess(userGuess);
-                console.log(userGuess);
+        //Sets the max guesses to 10
+        var maxGuessAttempts;
+        var lettersGuessed = [];
+        
+        //Valid input
+        var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+        
+        //Wordlist to pick from
+        var wordList = ["harry", "ron", "hermione", "broom", "wand", "quidditch", "dumbledore", "snape", "muggle", "hagrid", "snitch"]
+        
+        //Creating game with the words 
+        function createGame() {
+            
+            //Reset varriables when a new game starts
+            gameOver = false;
+            maxGuessAttempts = 10;
+            lettersGuessed = [];
+            displayedWord = [];
+            hiddenWord = [];
+            guessRemaining.textContent = maxGuessAttempts;
+            lettersUsed.textContent = lettersGuessed;
+            selectedWord.textContent = hiddenWord;
+            // selectedWord.textContent = displayedWord;
+            
+           
+            //picking a randomg word to start the game
+            currentWord = wordList[Math.floor(Math.random() * wordList.length)];
+            
+            //Console Log to see how the word is writting out
+            console.log(currentWord);
+            console.log(currentWord.length);
+            for (var x = 0; x < currentWord.length; x++) {
+                
+                //pushing to displayed word array 
+                displayedWord.push(currentWord[x]);
+                
+                //using another var to replace the characters with blank spaces
+                hiddenWord.push("_");
+                
+                //console log to make sure that this function is working
+                console.log(currentWord[x]);
+                
             }
             
-        
-            //Using for debugging to verify valid keys
+            console.log(hiddenWord);
             
+            //Using the splice function to replace the words in displayed word with the blank values
+            displayedWord.splice(0,displayedWord.length,hiddenWord);
             
-        
-        } else {
-            console.log("not a valid guess");
-        
+            //Using join function to remove commas
+            selectedWord.textContent = hiddenWord.join(" ");
         }
-    
-    } else {
-		
-	}
-}
+        
+        
+        function checkUserGuess(checkedGuess) {
+
+            foundInWord = false;
+            for (var j = 0; j < currentWord.length; j++) {
+                if (currentWord[j] === checkedGuess) {
+                    displayedWord.push(checkedGuess);
+                    selectedWord.textContent = displayedWord;
+                    foundInWord = true;
+                }
+            }
+        }
+
+
+        
+        document.onkeyup = function (event) {
+            var userGuess = event.key;
+            //if game is not over continuing to guess letters
+            if (gameOver === false) {
+
+                //Verifying that the keys pressed are valid
+                if (validKeys.includes(userGuess)) {
+
+                    //Verifying Letters guessed
+                    if (lettersGuessed.indexOf(userGuess) === -1) {
+                        lettersGuessed.push(userGuess);
+                        lettersUsed.textContent = lettersGuessed;
+                        checkUserGuess(userGuess);
+                        console.log(userGuess);
+                        console.log(foundInWord);
+                    } if (foundInWord === false) {
+                        (maxGuessAttempts--);
+                        guessRemaining.textContent = maxGuessAttempts;
+                        console.log(maxGuessAttempts);
+                    }
+
+
+                    //Using for debugging to verify valid keys
+
+
+
+                } else {
+                    console.log("not a valid guess");
+
+                }
+
+            }
+        }
+
     </script>
 
 </body>
+
 </html>
