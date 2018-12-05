@@ -33,6 +33,8 @@
         var guessRemaining = document.getElementById("guesses-remaining");
         var displayedWord = [];
         var hiddenWord = [];
+        var displayedWordStr;
+        var hiddenWordStr;
 
         //Sets the max guesses to 10
         var maxGuessAttempts;
@@ -56,7 +58,7 @@
             guessRemaining.textContent = maxGuessAttempts;
             lettersUsed.textContent = lettersGuessed;
             selectedWord.textContent = hiddenWord;
-            
+
             //picking a randomg word to start the game
             currentWord = wordList[Math.floor(Math.random() * wordList.length)];
 
@@ -75,13 +77,16 @@
                 // console.log(currentWord[x]);
             }
 
-            console.log(hiddenWord);
 
             //Using the splice function to replace the words in displayed word with the blank values
-            displayedWord.splice(0, displayedWord.length, hiddenWord);
+            // displayedWord.splice(0, displayedWord.length, hiddenWord);
+
+
 
             //Using join function to remove commas
             selectedWord.textContent = hiddenWord.join(" ");
+            // console.log(hiddenWord);
+            // console.log(displayedWord);
         }
 
 
@@ -92,54 +97,61 @@
                 if (currentWord[j] === checkedGuess) {
                     displayedWord.push(checkedGuess);
                     // selectedWord.textContent = displayedWord;
-                    hiddenWord.splice(j,1,checkedGuess);
+                    hiddenWord.splice(j, 1, checkedGuess);
                     selectedWord.textContent = hiddenWord.join(" ");
+                    // console.log(hiddenWord);
                     foundInWord = true;
                 }
             }
         }
 
 
+        document.onkeyup = function (event) {
+            var userGuess = event.key;
+            console.log(gameOver);
+            //if game is not over continuing to guess letters
+            if (gameOver === false) {
 
-            document.onkeyup = function (event) {
-                var userGuess = event.key;
-                //if game is not over continuing to guess letters
-                if (gameOver === false) {
+                //Verifying that the keys pressed are valid
+                if (validKeys.includes(userGuess)) {
 
-                    //Verifying that the keys pressed are valid
-                    if (validKeys.includes(userGuess)) {
-
-                        //Verifying Letters guessed
-                        if (lettersGuessed.indexOf(userGuess) === -1) {
-                            lettersGuessed.push(userGuess);
-                            lettersUsed.textContent = lettersGuessed;
-                            checkUserGuess(userGuess);
-                            console.log(userGuess);
-                            console.log(foundInWord);
-                        } else {
-                            console.log("not a valid guess");
-
-                        }
-
-                    } if (foundInWord === false) {
-                        (maxGuessAttempts--);
-                        guessRemaining.textContent = maxGuessAttempts;
-                        console.log(maxGuessAttempts);
+                    //Verifying Letters guessed
+                    if (lettersGuessed.indexOf(userGuess) === -1) {
+                        lettersGuessed.push(userGuess);
+                        lettersUsed.textContent = lettersGuessed;
+                        checkUserGuess(userGuess);
+                        // console.log(userGuess);
+                        // console.log(foundInWord);
+                    } else {
+                        console.log("not a valid guess");
 
                     }
 
+                } if (foundInWord === false) {
+                    (maxGuessAttempts--);
+                    guessRemaining.textContent = maxGuessAttempts;
+                    // console.log(maxGuessAttempts);                    
+                } 
 
-                    //Using for debugging to verify valid keys
-                    } if (maxGuessAttempts === 0) {
-                        gameOver === true;
-                        guessRemaining.textContent = "Game Over - You Lose";
-                        lettersUsed.textContent = "Game Over - You Lose";
-                        selectedWord.textContent = "Game Over - You";
-                    }
+
+                //Using for debugging to verify valid keys
+            } if (maxGuessAttempts === 0) {
+                gameOver = true;
+                
+                lettersUsed.textContent = "Better";
+                selectedWord.textContent = "Luck";
+                guessRemaining.textContent = "Next Time";
+                
+                
+            } if (hiddenWord.includes("_") === false){
+                lettersUsed.textContent = "CONGRATS!!"    
+                selectedWord.textContent = "You guessed the correct word " + currentWord;
+                guessRemaining.textContent = "You WIN!!";    
             }
+        }
 
-        </script>
-    
-    </body>
-    
-    </html>
+    </script>
+
+</body>
+
+</html>
