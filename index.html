@@ -4,154 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <title>HP HANGMAN</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
 </head>
 
 <body>
-    <h2>HARRY POTTER HANGMAN</h2>
-    <button onclick="createGame()">Start Game</button>
 
-    <div>Letters Guessed</div>
-    <div id="guessed-letters"></div>
-    <br>
-    <div>Word </div>
-    <div id="selected-word"></div>
-    <br>
-    <div>Guesses Remaining</div>
-    <div id="guesses-remaining"></div>
+    <div class="jumbotron jumbotron-fluid background-light p-0">
+        <div class="container-fluid m-0 p-0">
+            <div class="row">
+                <img src="assets/images/banner.png" class="img-fluid w-100 h-50px m-0 p-0">
+            </div>
+        </div>
+    </div>
 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card border-light text-center" style="width: 18rem;">
+                    <img class="card-img-top" src="assets/images/hogwarts.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <a href="#" class="btn btn-primary" onclick="createGame()">Click to Start Game</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
 
-
-    <script>
-        //start with zero wins and loses
-        var wins = 0;
-        var loses = 0;
-        var foundInWord;
-        var currentWord;
-        var gameOver;
-        var lettersUsed = document.getElementById("guessed-letters");
-        var selectedWord = document.getElementById("selected-word");
-        var guessRemaining = document.getElementById("guesses-remaining");
-        var displayedWord = [];
-        var hiddenWord = [];
-        var displayedWordStr;
-        var hiddenWordStr;
-
-        //Sets the max guesses to 10
-        var maxGuessAttempts;
-        var lettersGuessed = [];
-
-        //Valid input
-        var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
-        //Wordlist to pick from
-        var wordList = ["harry", "ron", "hermione", "broom", "wand", "quidditch", "dumbledore", "snape", "muggle", "hagrid", "snitch"]
-
-        //Creating game with the words 
-        function createGame() {
-
-            //Reset varriables when a new game starts
-            gameOver = false;
-            maxGuessAttempts = 10;
-            lettersGuessed = [];
-            displayedWord = [];
-            hiddenWord = [];
-            guessRemaining.textContent = maxGuessAttempts;
-            lettersUsed.textContent = lettersGuessed;
-            selectedWord.textContent = hiddenWord;
-
-            //picking a randomg word to start the game
-            currentWord = wordList[Math.floor(Math.random() * wordList.length)];
-
-            //Console Log to see how the word is writting out
-            console.log(currentWord);
-            // console.log(currentWord.length);
-            for (var x = 0; x < currentWord.length; x++) {
-
-                //pushing to displayed word array 
-                displayedWord.push(currentWord[x]);
-
-                //using another var to replace the characters with blank spaces
-                hiddenWord.push("_");
-
-                //console log to make sure that this function is working
-                // console.log(currentWord[x]);
-            }
+                <div class="card" style="width: 18rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="guessed-letters">Letters Guessed:</li>
+                        <li class="list-group-item" id="selected-word">Click Start</li>
+                        <li class="list-group-item" id="guesses-remaining">Guesses Remaining:</li>
+                    </ul>
+                </div>
 
 
-            //Using the splice function to replace the words in displayed word with the blank values
-            // displayedWord.splice(0, displayedWord.length, hiddenWord);
+            </div>
+
+        </div>
 
 
 
-            //Using join function to remove commas
-            selectedWord.textContent = hiddenWord.join(" ");
-            // console.log(hiddenWord);
-            // console.log(displayedWord);
-        }
+    </div>
 
-
-        function checkUserGuess(checkedGuess) {
-
-            foundInWord = false;
-            for (var j = 0; j < currentWord.length; j++) {
-                if (currentWord[j] === checkedGuess) {
-                    displayedWord.push(checkedGuess);
-                    // selectedWord.textContent = displayedWord;
-                    hiddenWord.splice(j, 1, checkedGuess);
-                    selectedWord.textContent = hiddenWord.join(" ");
-                    // console.log(hiddenWord);
-                    foundInWord = true;
-                }
-            }
-        }
-
-
-        document.onkeyup = function (event) {
-            var userGuess = event.key;
-            console.log(gameOver);
-            //if game is not over continuing to guess letters
-            if (gameOver === false) {
-
-                //Verifying that the keys pressed are valid
-                if (validKeys.includes(userGuess)) {
-
-                    //Verifying Letters guessed
-                    if (lettersGuessed.indexOf(userGuess) === -1) {
-                        lettersGuessed.push(userGuess);
-                        lettersUsed.textContent = lettersGuessed;
-                        checkUserGuess(userGuess);
-                        // console.log(userGuess);
-                        // console.log(foundInWord);
-                    } else {
-                        console.log("not a valid guess");
-
-                    }
-
-                } if (foundInWord === false) {
-                    (maxGuessAttempts--);
-                    guessRemaining.textContent = maxGuessAttempts;
-                    // console.log(maxGuessAttempts);                    
-                } 
-
-
-                //Using for debugging to verify valid keys
-            } if (maxGuessAttempts === 0) {
-                gameOver = true;
-                
-                lettersUsed.textContent = "Better";
-                selectedWord.textContent = "Luck";
-                guessRemaining.textContent = "Next Time";
-                
-                
-            } if (hiddenWord.includes("_") === false){
-                lettersUsed.textContent = "CONGRATS!!"    
-                selectedWord.textContent = "You guessed the correct word " + currentWord;
-                guessRemaining.textContent = "You WIN!!";    
-            }
-        }
-
-    </script>
-
+    <script type="text/javascript" src="assets/javascript/script.js"></script>
 </body>
 
 </html>
