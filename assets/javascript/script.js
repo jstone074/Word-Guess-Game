@@ -88,7 +88,7 @@ function setImage() {
     } if (currentWord === "hagrid") {
         document.getElementById("myImg").src = "assets/images/hagrid.jpg";
     }if (currentWord === "broom") {
-        document.getElementById("myImg").src = "assets/images/hagrid.jpeg";
+        document.getElementById("myImg").src = "assets/images/hagrid.jpg";
     }
 }
 
