@@ -9,9 +9,9 @@
 
 </head>
 
-<body>
+<body class="bg-dark">
 
-    <div class="jumbotron jumbotron-fluid background-light p-0">
+    <div class="jumbotron jumbotron p-0">
         <div class="container-fluid">
             <div class="row">
                 <img src="assets/images/banner.png" class="img-fluid w-100 h-50px">
@@ -19,20 +19,22 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid pt-2 pb-2 bg-secondary" >
         <div class="row">
             <div class="col-md-3">
-                <div class="card border-light text-center" style="width: 18rem;">
-                    <img class="card-img-top" src="assets/images/hogwarts.jpg" alt="Card image cap">
-                    <div class="card-body">
+                <div class="card border-secondary text-center bg-secondary" style="width: 18rem;">
+                    <img class="card-img-top bg-secondary" src="assets/images/hogwarts.jpg" alt="Card image cap">
+                    <div class="card-body bg-secondary">
                         <a href="#" class="btn btn-primary" onclick="createGame()">Click to Start Game</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
 
-                <div class="card" style="width:auto;">
+                <div class="card ml-2" style="width:auto;">
                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="userWins">Wins:</li>
+                        <li class="list-group-item" id="userLoses">Loses:</li>
                         <li class="list-group-item" id="guessed-letters">Letters Guessed:</li>
                         <li class="list-group-item" id="selected-word">Click Start</li>
                         <li class="list-group-item" id="guesses-remaining">Guesses Remaining:</li>

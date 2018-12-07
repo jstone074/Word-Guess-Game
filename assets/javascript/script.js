@@ -11,6 +11,9 @@ var displayedWord = [];
 var hiddenWord = [];
 var displayedWordStr;
 var hiddenWordStr;
+var userWins = document.getElementById("userWins");
+var userLoses = document.getElementById("userLoses");
+
 
 //Sets the max guesses to 10
 var maxGuessAttempts;
@@ -35,6 +38,8 @@ function createGame() {
     guessRemaining.textContent = ("Guesses Remaining: " + maxGuessAttempts + " ");
     lettersUsed.textContent = ("Letters Guessed: " + lettersGuessed)
     selectedWord.textContent = hiddenWord;
+    userWins.textContent = ("Wins: " + wins);
+    userLoses.textContent = ("Loses: " + loses);
 
     //picking a randomg word to start the game
     currentWord = wordList[Math.floor(Math.random() * wordList.length)];
@@ -124,10 +129,11 @@ document.onkeyup = function (event) {
                 checkUserGuess(userGuess);
                 // console.log(userGuess);
                 // console.log(foundInWord);
-            } else {
-                console.log("not a valid guess");
+            } 
+            // else {
+            //     console.log("not a valid guess");
 
-            }
+            // }
 
         } if (foundInWord === false) {
             (maxGuessAttempts--);
@@ -137,19 +143,25 @@ document.onkeyup = function (event) {
 
 
         //Using for debugging to verify valid keys
-    } if (maxGuessAttempts === 0) {
+    } if (maxGuessAttempts === 0 && gameOver === false) {
         gameOver = true;
-
         lettersUsed.textContent = "Better";
         selectedWord.textContent = "Luck";
         guessRemaining.textContent = "Next Time";
+        (loses++);
+        userLoses.textContent = ("Loses: " + loses);
+
         document.getElementById("myImg").src = "assets/images/voldermort.jpg";
 
 
-    } if (hiddenWord.includes("_") === false) {
+    } if (hiddenWord.includes("_") === false && gameOver === false) {
+        gameOver = true;
         lettersUsed.textContent = "CONGRATS!!"
         selectedWord.textContent = "You guessed the correct word " + currentWord;
         guessRemaining.textContent = "You WIN!!";
+        (wins++);
+        userWins.textContent = ("Wins: " + wins);
         setImage();
     }
 }
+
